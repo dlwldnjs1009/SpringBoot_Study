@@ -6,13 +6,9 @@ import com.example.demo.model.TodoEntity;
 import com.example.demo.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+
 
 
 import java.util.ArrayList;
@@ -35,7 +31,7 @@ public class TodoController {
         return ResponseEntity.ok().body(response);
     }
     @PostMapping
-    public ResponseEntity<?> createTodo(@RequestBody TodoDTO dto) {
+    public ResponseEntity<?> createTodo(@AuthenticationPrincipal String userId, @RequestBody TodoDTO dto) {
         try {
             String temporaryUserId = "temporary-user"; // temporary user id.
 
@@ -67,7 +63,7 @@ public class TodoController {
         }
     }
     @GetMapping
-    private ResponseEntity<?> retrieveTodoList() {
+    private ResponseEntity<?> retrieveTodoList(@AuthenticationPrincipal String userId) {
         String temporaryUserId = "temporary-user"; //temporary user id.
 
         //(1) 서비스 메서드의 retrieve 메서드 사용해 Todo 리스트 가져옴
@@ -84,7 +80,7 @@ public class TodoController {
     }
 
     @PutMapping
-    public ResponseEntity<?> updateTodo(@RequestBody TodoDTO dto) {
+    public ResponseEntity<?> updateTodo(@AuthenticationPrincipal String userId, @RequestBody TodoDTO dto) {
         String temporaryUserId = "temporary-user"; // temporary user id.
 
         //(1) dto를 entity로 반환
@@ -107,7 +103,7 @@ public class TodoController {
     }
 
     @DeleteMapping
-    public ResponseEntity<?> deleteTodo(@RequestBody TodoDTO dto) {
+    public ResponseEntity<?> deleteTodo(@AuthenticationPrincipal String userId, @RequestBody TodoDTO dto) {
         try{
             String temporaryUserId = "temporary-user"; //temporary user id.
 
